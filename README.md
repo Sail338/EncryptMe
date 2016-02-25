@@ -15,3 +15,5 @@ Very Secure file and folder encryption
  -n specify the name of encrypted file (default same name)
  
  -nn add an extension of -'enc' to each encrypted file
+ 
+ -k [keyname][required] creates a custom key for ecnryption and stores it in user_config.conf
