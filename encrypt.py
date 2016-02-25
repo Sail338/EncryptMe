@@ -7,26 +7,34 @@ import shutil
 import argparse
 #
 listOfFiles = []
-def encrypt_f(args):
-    print(listOfFiles)
-    #add files
-    if(args !=''):
-        listOfFiles.append(args)
-    for file in listOfFiles:
-        print "TEST"
+password = ""
+def setPass(args):
+    file = open("user_config.conf\n","w")
 
-        password = "1234212311"
-        rey = hashlib.sha256(password).digest()
-        for i in range (10000):
-            rey = hashlib.sha256(rey).hexdigest()
-        with open(file, 'rb') as fo:
-            plaintext = fo.read()
-            enc = encrypt(rey, plaintext)
-        with open(file, 'wb') as fo:
-            fo.write(enc)
-            fo.close()
+    password = args
+    file.write(password)
+
+    file.close()
+
+def encrypt_f(args):
+    #add files
+     password = open("user_config.conf","rb").read()
+     if password == '':
+         print("Please set password")
+     else:
+        if(args !=''):
+            listOfFiles.append(args)
+        for file in listOfFiles:
+            rey = hashlib.sha256(password).digest()
+            for i in range (10000):
+                rey = hashlib.sha256(rey).hexdigest()
+            with open(file, 'rb') as fo:
+                plaintext = fo.read()
+                enc = encrypt(rey, plaintext)
+            with open(file, 'wb') as fo:
+                fo.write(enc)
+                fo.close()
 def decrypt_f(args):
-    password =  "1234212311"
     cyper = open(args,'rb').read()
     rey = hashlib.sha256(password).digest()
     for i in range (10000):
@@ -61,6 +69,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-e",type = encrypt_f)
 parser.add_argument("-d",type = decrypt_f)
 parser.add_argument("-re",type = recursiveHelper)
-
+parser.add_argument("-k",type = setPass)
 args = parser.parse_args()
 print (args)
